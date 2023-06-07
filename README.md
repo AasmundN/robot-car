@@ -17,7 +17,7 @@ In the _Arduino IDE_ choose the _ESP32 Dev Module_ board. Paste the [carLibrary]
 
 Lastly install the [ESPAsyncWebServer](https://github.com/me-no-dev/ESPAsyncWebServer#installation) library as a _.ZIP_ file from github and include it in the IDE.
 
-### ZUMO34u4 setup
+### Zumo34U4 setup
 
 ---
 
