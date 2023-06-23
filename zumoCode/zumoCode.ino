@@ -17,7 +17,7 @@ int acc_const = 50;
 int accPerSec = 100;
 unsigned long prevAccMillis = 0;
 
-int maxSpeed = 190;
+int maxSpeed = 200;
 bool isCalibrated = false;
 bool lineColor = false;
 

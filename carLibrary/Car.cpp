@@ -275,7 +275,7 @@ void Car::initCar(bool color) {
     // Print ESP Local IP Address
     Serial.print("Koblet til internett med IP: ");
     Serial.print(WiFi.localIP());
-    Serial.println(":" + static_cast<String>(port));
+   //  Serial.println(":" + static_cast<String>(port));
     display.clearDisplay();
     writeDisplay("Koblet til med IP: ", 1);
     display.print(WiFi.localIP());
