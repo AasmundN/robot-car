@@ -279,7 +279,7 @@ void Car::initCar(bool color) {
     display.clearDisplay();
     writeDisplay("Koblet til med IP: ", 1);
     display.print(WiFi.localIP());
-    display.println(":" + static_cast<String>(port));
+   //  display.println(":" + static_cast<String>(port));
     //display.println("WiFi: " + static_cast<String>(ssid)); //Seb la inn
     display.display();
 

@@ -1,7 +1,7 @@
 #include "Car.h"
 
 //nettverksnavn og nettverkspassord byttes ut med navn og passord for det aktuelle nettverket
-Car car("nettverksnavn", "nettverkspassord");
+Car car("ruter_cot", "ESP_32_is_best");
 
 void setup() { 
   //BLACK for svart linje og WHITE for hvit linje
