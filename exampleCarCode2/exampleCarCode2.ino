@@ -20,18 +20,18 @@ int speed = 50; //variabel som lagrer hastigheten vi vil kjøre med
 int leftSpeed = 0; //variabel som lagrer hastigheten venstre belte kjører med akkurat nå
 int rightSpeed = 0; //variabel som lagrer hastigheten høyre belte kjører med akkurat nå
 
-    float P = 1;
-    float I = 0.000001;
-    float D = 0.001;
+    float P = 1;          //Proporsjonal forsterkning
+    float I = 0.000001;   //Integral forsterkning
+    float D = 0.001;      //Derivat forsterkning
 
-    int eprev = 0;
-    float i = 0;
-    int der = 0;
-    int err = 0;
+    int eprev = 0;        //Den forrige feilverdien
+    float i = 0;          //Diskret integral
+    int der = 0;          //Diskret derivat
+    int err = 0;          //Feilverdi
     
-    float u;
+    float u;              //Pådrag
 
-
+//Metningsfunksjon
 float sat(float x, float maxlim, float minlim){
   if(x>maxlim)return maxlim;
   if(x<minlim)return minlim;
@@ -41,13 +41,14 @@ float sat(float x, float maxlim, float minlim){
 void loop() { //ikke fjern denne linjen!
 
   //skriv kode for å sende data her
-  sendData(1,(int)(err*P)); //send hastigheten til graf 1
-  sendData(2,(int)(i)); //send linjedata til graf 2
-  sendData(3,(int)(der*D)); //send avstandsdata til graf 3
-  
+  sendData(1,(int)(err*P)); //send proportsjonalt pådrag til graf 1
+  sendData(2,(int)(i)); //send integralpådrag til graf 2
+  sendData(3,(int)(der*D)); //send derivatpådrag til graf 3
+
   if(linemode == true) { //sjekk om linjefølger skal være på
+    //PID regulator
     eprev = err;
-    err = readLine();
+    err = readLine();           
     i = sat(i+I*err,100,-100);
     der = err-eprev;
 
