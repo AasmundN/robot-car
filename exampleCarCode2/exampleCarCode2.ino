@@ -20,16 +20,47 @@ int speed = 50; //variabel som lagrer hastigheten vi vil kjøre med
 int leftSpeed = 0; //variabel som lagrer hastigheten venstre belte kjører med akkurat nå
 int rightSpeed = 0; //variabel som lagrer hastigheten høyre belte kjører med akkurat nå
 
+    float P = 1;          //Proporsjonal forsterkning
+    float I = 0.000001;   //Integral forsterkning
+    float D = 0.001;      //Derivat forsterkning
+
+    int eprev = 0;        //Den forrige feilverdien
+    float i = 0;          //Diskret integral
+    int der = 0;          //Diskret derivat
+    int err = 0;          //Feilverdi
+    
+    float u;              //Pådrag
+
+//Metningsfunksjon
+float sat(float x, float maxlim, float minlim){
+  if(x>maxlim)return maxlim;
+  if(x<minlim)return minlim;
+  return x;
+} 
+
 void loop() { //ikke fjern denne linjen!
 
   //skriv kode for å sende data her
-  sendData(1,speed); //send hastigheten til graf 1
-  sendData(2,readLine()); //send linjedata til graf 2
-  sendData(3,readProx()); //send avstandsdata til graf 3
-  
+  sendData(1,(int)(err*P)); //send proportsjonalt pådrag til graf 1
+  sendData(2,(int)(i)); //send integralpådrag til graf 2
+  sendData(3,(int)(der*D)); //send derivatpådrag til graf 3
+
   if(linemode == true) { //sjekk om linjefølger skal være på
-    //skriv linjefølger-kode her
-    drive(75+readLine()/2, 75-readLine()/2); //kjør med varierende hastighet basert på dataen fra linjefølgeren
+    //PID regulator
+    eprev = err;
+    err = readLine();           
+    i = sat(i+I*err,100,-100);
+    der = err-eprev;
+
+    u = sat(P*err + i + D*der,100,-100);
+    
+    if(u>0){
+      drive(100,100-abs(u));
+    }else{
+      drive(100-abs(u),100);
+    }
+    
+    
   } else {  //om linjefølger ikke skal være på så gjør dette
     drive(leftSpeed, rightSpeed); //kjør med hastigheten bestemt av de to variablene
   }
