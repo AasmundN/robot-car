@@ -166,19 +166,19 @@ void loop() {
     else
       prevEncoderVals[0] = false;
 
-    Serial.print(encoderValLeft);
-    Serial.print("  ");
-    Serial.print(stallThresholdLeft);
-    Serial.print("  ");
-    Serial.print(encoderValRight);
-    Serial.print("  ");
-    Serial.print(stallThresholdRight);
-    Serial.print("  ");
-    Serial.print(prevEncoderVals[0]);
-    Serial.print("  ");
-    Serial.print(prevEncoderVals[1]);
-    Serial.print("  ");
-    Serial.println(prevEncoderVals[2]);  
+   //  Serial.print(encoderValLeft);
+   //  Serial.print("  ");
+   //  Serial.print(stallThresholdLeft);
+   //  Serial.print("  ");
+   //  Serial.print(encoderValRight);
+   //  Serial.print("  ");
+   //  Serial.print(stallThresholdRight);
+   //  Serial.print("  ");
+   //  Serial.print(prevEncoderVals[0]);
+   //  Serial.print("  ");
+   //  Serial.print(prevEncoderVals[1]);
+   //  Serial.print("  ");
+   //  Serial.println(prevEncoderVals[2]);  
 
     prevStallMillis = millis();
   }

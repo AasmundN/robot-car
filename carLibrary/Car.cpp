@@ -74,7 +74,6 @@ void sendData(int graph, double data) {
     if(graph<1) graph = 1;
     if(graph>3) graph = 3;
     data = floor(data*10)/10;
-    if(graph==2) Serial.println(data);
     ws.textAll(String(graph) + String(data));
     prevDataMillis[graph-1] = millis();
 }
@@ -235,12 +234,19 @@ void secondCoreLoop( void * pvParameters ){
   } 
 }
 
+String processor(const String& var) {
+  if(var == "GRAPH_NAME")
+    return WiFi.macAddress();
+  return String();
+}
+
 void Car::initCar(bool color) {
 
     lineColor = color;
 
     Serial.begin(115200);
     Serial2.begin(115200, SERIAL_8N1, RXD2, TXD2);
+
 
     xTaskCreatePinnedToCore(
                     secondCoreLoop, 
@@ -287,7 +293,7 @@ void Car::initCar(bool color) {
 
     // Route for root / web page
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-        request->send_P(200, "text/html", index_html, NULL);
+        request->send_P(200, "text/html", index_html, processor);
     });
 
     // Start server
