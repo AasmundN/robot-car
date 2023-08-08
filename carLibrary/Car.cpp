@@ -274,11 +274,11 @@ void Car::initCar(bool color) {
 
     // Print ESP Local IP Address
     Serial.print("Koblet til internett med IP: ");
-    Serial.print(WiFi.localIP());
+    Serial.println(WiFi.localIP());
    //  Serial.println(":" + static_cast<String>(port));
     display.clearDisplay();
     writeDisplay("Koblet til med IP: ", 1);
-    display.println(WiFi.localIP());
+    display.print(WiFi.localIP());
    //  display.println(":" + static_cast<String>(port));
     //display.println("WiFi: " + static_cast<String>(ssid)); //Seb la inn
     display.display();
