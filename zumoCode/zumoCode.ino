@@ -2,6 +2,8 @@
 
 //https://www.pololu.com/docs/0J63
 
+#define LED_PIN 14
+
 const int ENA = 10; //Motor 1
 const int IN1 = 16; //Wheel direction 1
 const int ENB = 9; //Motor 2
@@ -17,7 +19,7 @@ int acc_const = 50;
 int accPerSec = 100;
 unsigned long prevAccMillis = 0;
 
-int maxSpeed = 200;
+int maxSpeed = 200; 
 bool isCalibrated = false;
 bool lineColor = false;
 
@@ -93,6 +95,9 @@ void setup() {
 
   Serial1.begin(115200);
   Serial.begin(115200);
+
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, LOW);
 
   delay(100);
   buzzer.play(">g32>>>>>c32");
@@ -219,6 +224,10 @@ void loop() {
           calibrateLineSensors();
           isCalibrated = true;
         }
+        break;
+
+      case 'w': // connected to wifi
+        digitalWrite(LED_PIN, HIGH);
         break;
 
       default:
