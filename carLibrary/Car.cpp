@@ -278,7 +278,7 @@ void Car::initCar(bool color) {
    //  Serial.println(":" + static_cast<String>(port));
     display.clearDisplay();
     writeDisplay("Koblet til med IP: ", 1);
-    display.print(WiFi.localIP());
+    display.println(WiFi.localIP());
    //  display.println(":" + static_cast<String>(port));
     //display.println("WiFi: " + static_cast<String>(ssid)); //Seb la inn
     display.display();
@@ -293,6 +293,8 @@ void Car::initCar(bool color) {
     // Start server
     server.begin();
 
+    // notify car that everything is ready
+    Serial2.write('w');
     Serial.println("Bil klar!");
 
 }
