@@ -38,15 +38,15 @@
                         <div class="chartLabels">
                             <div class="chartLabel">
                                 <div class="labelTickBox tick0" onclick="toggleGraph(0)"></div>
-                                <input class="graphName name0" placeholder="Graf 1" maxlength="5" onfocus="toggleKeys()" onblur="toggleKeys()">
+                                <input class="graphName name0" placeholder="Graf 1" maxlength="5" onfocus="toggleKeys()" onblur="toggleKeys()" onchange="updateGraphName(0)">
                             </div>
                             <div class="chartLabel">
                                 <div class="labelTickBox tick1" onclick="toggleGraph(1)"></div>
-                                <input class="graphName name1" placeholder="Graf 2" maxlength="5" onfocus="toggleKeys()" onblur="toggleKeys()">
+                                <input class="graphName name1" placeholder="Graf 2" maxlength="5" onfocus="toggleKeys()" onblur="toggleKeys()" onchange="updateGraphName(1)">
                             </div>
                             <div class="chartLabel">
                                 <div class="labelTickBox tick2" onclick="toggleGraph(2)"></div>
-                                <input class="graphName name2" placeholder="Graf 3" maxlength="5" onfocus="toggleKeys()" onblur="toggleKeys()">
+                                <input class="graphName name2" placeholder="Graf 3" maxlength="5" onfocus="toggleKeys()" onblur="toggleKeys()" onchange="updateGraphName(2)">
                             </div>
                         </div>
                         <div class="chartContainer">
@@ -366,6 +366,10 @@
       var chartLabels = document.getElementsByClassName("chartLabels")[0]
       var labelTickBoxes = document.getElementsByClassName("labelTickBox")
       var graphNames = document.getElementsByClassName("graphName")
+
+      // gives unique localStorage key to each ESP
+      var localStorageKey = "%GRAPH_NAME%"
+      
       var graph = document.getElementById("chart")
       var ctx = graph.getContext("2d")
 
@@ -398,6 +402,32 @@
       function setGraph(cb, graph) {
          for (let i = 0; i < dataPoints; i++) {
             updateData(`${graph}${cb(i)}`)
+         }
+      }
+
+      function updateGraphName(graph) {
+         let graphInfo = localStorage.getItem(localStorageKey) 
+            ?? JSON.stringify([["", false],["", false],["", false]])
+
+         graphInfo = JSON.parse(graphInfo);
+
+         graphInfo[graph][0] = graphNames[graph].value
+         localStorage.setItem(localStorageKey, JSON.stringify(graphInfo))
+      }
+
+      const graphInfoFromStorage = JSON.parse(localStorage.getItem(localStorageKey) )
+      ?? [["", false],["", false],["", false]]
+
+      localStorage.setItem(localStorageKey, JSON.stringify(graphInfoFromStorage))
+
+      for (let i = 0; i<graphNames.length; i++) {
+         graphNames[i].value = graphInfoFromStorage[i][0]
+         graphToggle[i] = graphInfoFromStorage[i][1]
+
+         if (graphToggle[i]) {
+            labelTickBoxes[i].style.backgroundColor = graphColors[i]
+         } else {
+            labelTickBoxes[i].style.backgroundColor = "transparent"
          }
       }
 
@@ -607,6 +637,15 @@
          }
 
          graphToggle[index] = !graphToggle[index]
+
+         // update localstorage
+         let graphInfo = localStorage.getItem(localStorageKey) 
+            ?? JSON.stringify([["", false],["", false],["", false]])
+
+         graphInfo = JSON.parse(graphInfo);
+
+         graphInfo[index][1] = graphToggle[index]
+         localStorage.setItem(localStorageKey, JSON.stringify(graphInfo))
       }
 
       var buttons = document.getElementsByClassName("btn")
