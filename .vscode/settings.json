@@ -1,4 +1,5 @@
 {
    "editor.formatOnSave": true,
+   "editor.defaultFormatter": "ms-vscode.cpptools",
    "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: LLVM, UseTab: Never, IndentWidth: 3, TabWidth: 3, BreakBeforeBraces: Attach, AllowShortIfStatementsOnASingleLine: false, IndentCaseLabels: false, ColumnLimit: 0, AccessModifierOffset: -2 }"
 }
