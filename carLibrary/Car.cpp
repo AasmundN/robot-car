@@ -2,13 +2,6 @@
 // and https://RandomNerdTutorials.com/esp32-websocket-server-arduino/
 #include "Car.h"
 #include "HTML.h"
-#include <AsyncTCP.h>
-#include <ESPAsyncWebServer.h> //library change: https://github.com/me-no-dev/ESPAsyncWebServer/blob/master/src/WebResponseImpl.h#L62
-#include <WiFi.h>
-
-#include "Wire.h"
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
 
 #define port 80
 
