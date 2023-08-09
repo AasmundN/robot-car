@@ -35,6 +35,11 @@ class Car {
 double readNTC();
 int readLine();
 int readProx();
+int readEncoders();
+int readAngleX();
+int readAngleY();
+int readAngleZ();
+int getReadTime();
 void sendData(int graph, double data);
 
 void drive(int leftSpeed, int rightSpeed);

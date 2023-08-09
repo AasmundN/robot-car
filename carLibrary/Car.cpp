@@ -1,5 +1,6 @@
 // some inspiration: https://microcontrollerslab.com/esp32-websocket-server-arduino-ide-control-gpios-relays/
 // and https://RandomNerdTutorials.com/esp32-websocket-server-arduino/
+
 #include "Car.h"
 #include "HTML.h"
 
@@ -18,7 +19,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 #define NTCpin 36
 
-int8_t dataPlaceholder[2] = {0, 0};
+int8_t dataPlaceholder[7] = {0, 0, 0, 0, 0, 0, 0};
 
 unsigned long prevDataMillis[3] = {0, 0, 0};
 int dataPerSec = 10;
@@ -105,6 +106,30 @@ int readLine() {
       isCalibrated = true;
    }
    return dataPlaceholder[1];
+}
+
+int readEncoders() {
+   // multiply value by two in order to get the correct value
+   // this is due to UART package only containing one byte
+   return 2 * dataPlaceholder[2];
+}
+
+int readAngleX() {
+   return 2 * dataPlaceholder[3];
+}
+
+int readAngleY() {
+   return 2 * dataPlaceholder[4];
+}
+
+int readAngleZ() {
+   return 2 * dataPlaceholder[5];
+}
+
+int getReadTime() {
+   // return the time it took to read the sensors once
+   // this can be used to calculate the speed
+   return dataPlaceholder[6];
 }
 
 void Car::handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
@@ -225,8 +250,8 @@ void Car::initWebSocket() {
 void secondCoreLoop(void *pvParameters) {
    for (;;) {
       ws.cleanupClients();
-      if (Serial2.available() >= 2) {
-         for (int i = 0; i < 2; i++)
+      if (Serial2.available() >= 7) {
+         for (int i = 0; i < 7; i++)
             dataPlaceholder[i] = Serial2.read();
          while (Serial2.available())
             Serial2.read();
