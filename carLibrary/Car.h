@@ -1,8 +1,8 @@
 #pragma once
 
+#include <WiFi.h>
 #include <AsyncTCP.h>
 #include <ESPAsyncWebServer.h> //library change: https://github.com/me-no-dev/ESPAsyncWebServer/blob/master/src/WebResponseImpl.h#L62
-#include <WiFi.h>
 
 #include "Wire.h"
 #include <Adafruit_GFX.h>
