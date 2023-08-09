@@ -43,9 +43,9 @@ float sat(float x, float maxlim, float minlim) {
 void loop() { // ikke fjern denne linjen!
 
    // skriv kode for å sende data her
-   sendData(1, speed);      // send proportsjonalt pådrag til graf 1
-   sendData(2, readProx()); // send integralpådrag til graf 2
-   // sendData(3,(int)(der*D)); //send derivatpådrag til graf 3
+   sendData(1, (int)(err * P)); // send proportsjonalt pådrag til graf 1
+   sendData(2, (int)(i));       // send integralpådrag til graf 2
+   sendData(3, (int)(der * D)); // send derivatpådrag til graf 3
 
    if (linemode == true) { // sjekk om linjefølger skal være på
       // PID regulator

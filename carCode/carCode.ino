@@ -33,33 +33,33 @@ void w(bool button) { // ikke fjern denne linjen!
 }
 
 void a(bool button) { // ikke fjern denne linjen!
-                      // BEGYNN HER!
+   // BEGYNN HER!
 }
 
 void s(bool button) { // ikke fjern denne linjen!
-                      // skriv kode her
+   // skriv kode her
 }
 
 void d(bool button) { // ikke fjern denne linjen!
-                      // skriv kode her
+   // skriv kode her
 }
 
 void e(bool button) { // ikke fjern denne linjen!
-                      // skriv kode her
+   // skriv kode her
 }
 
 void q(bool button) { // ikke fjern denne linjen!
-                      // skriv kode her
+   // skriv kode her
 }
 
 void triangle(bool button) { // ikke fjern denne linjen!
-                             // skriv kode her
+   // skriv kode her
 }
 
 void circle(bool button) { // ikke fjern denne linjen!
-                           // skriv kode her
+   // skriv kode her
 }
 
 void square(bool button) { // ikke fjern denne linjen!
-                           // skriv kode her
+   // skriv kode her
 }
