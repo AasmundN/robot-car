@@ -6,7 +6,6 @@
 #include "Car.h"
 
 Car car("ruter_cot", "ESP_32_is_best");
-// Car car("iPhone", "testPassord");
 
 void setup() {
    car.initCar(BLACK); // BLACK for svart linje og WHITE for hvit linje
@@ -43,26 +42,26 @@ float sat(float x, float maxlim, float minlim) {
 void loop() { // ikke fjern denne linjen!
 
    // skriv kode for å sende data her
-   sendData(1, (int)(err * P)); // send proportsjonalt pådrag til graf 1
-   sendData(2, (int)(i));       // send integralpådrag til graf 2
-   sendData(3, (int)(der * D)); // send derivatpådrag til graf 3
+   car.sendData(1, car.data[PROXIMITY].value);
+   car.sendData(2, car.data[ENCODERS].value);
+   car.sendData(3, car.data[GYRO].value);
 
    if (linemode == true) { // sjekk om linjefølger skal være på
       // PID regulator
       eprev = err;
-      err = readLine();
+      err = car.data[LINE].value;
       i = sat(i + I * err, 100, -100);
       der = err - eprev;
 
       u = sat(P * err + i + D * der, 100, -100);
 
       if (u > 0) {
-         drive(100, 100 - abs(u));
+         car.drive(100, 100 - abs(u));
       } else {
-         drive(100 - abs(u), 100);
+         car.drive(100 - abs(u), 100);
       }
-   } else {                         // om linjefølger ikke skal være på så gjør dette
-      drive(leftSpeed, rightSpeed); // kjør med hastigheten bestemt av de to variablene
+   } else {                             // om linjefølger ikke skal være på så gjør dette
+      car.drive(leftSpeed, rightSpeed); // kjør med hastigheten bestemt av de to variablene
    }
 }
 
@@ -139,7 +138,9 @@ void q(bool button) { // ikke fjern denne linjen!
 void triangle(bool button) { // ikke fjern denne linjen!
    // skriv kode her
    if (button == UP)
-      return;            // om knappen slippes opp så avslutt kodesnutten her. Altså vil ikke linjene under kjøres
+      return; // om knappen slippes opp så avslutt kodesnutten her. Altså vil ikke linjene under kjøres
+
+   car.calibrateLine();
    linemode = !linemode; // endre linemode-variabelen til det motsatte av det den er nå. For eksempel, om linemode nå er lik false vil den bli byttet til true
    leftSpeed = 0;        // sett leftSpeed til 0
    rightSpeed = 0;       // sett rightSpeed til 0

@@ -24,11 +24,11 @@ void loop() { // ikke fjern denne linjen!
 void w(bool button) { // ikke fjern denne linjen!
    if (button == DOWN) {
       // dette skjer når knappen trykkes ned
-      drive(50, 50);
+      car.drive(50, 50);
    }
    if (button == UP) {
       // dette skjer når knappen slippes opp
-      drive(0, 0);
+      car.drive(0, 0);
    }
 }
 
