@@ -21,13 +21,13 @@ int leftSpeed = 0;  // variabel som lagrer hastigheten venstre belte kjører med
 int rightSpeed = 0; // variabel som lagrer hastigheten høyre belte kjører med akkurat nå
 
 void loop() { // ikke fjern denne linjen!
-   sendData(1,readAngleZ());
+   car.sendData(1, car.data[GYRO].value);
    if (turnResistMode == true) {
-      int angle = readAngleZ();
-      int turnspeed = (angle) * 100 / 180;
-      drive(turnspeed*10, -turnspeed*10);
+      int angle = car.data[GYRO].value;
+      int turnspeed = (angle)*100 / 180;
+      car.drive(turnspeed * 10, -turnspeed * 10);
    } else {
-      drive(leftSpeed, rightSpeed); // kjør med hastigheten bestemt av de to variablene
+      car.drive(leftSpeed, rightSpeed); // kjør med hastigheten bestemt av de to variablene
    }
 }
 
@@ -106,7 +106,7 @@ void triangle(bool button) { // ikke fjern denne linjen!
    if (button == UP)
       return;                        // om knappen slippes opp så avslutt kodesnutten her. Altså vil ikke linjene under kjøres
    turnResistMode = !turnResistMode; // endre turnResistMode-variabelen til det motsatte av det den er nå. For eksempel, om turnResistMode nå er lik false vil den bli byttet til true
-   //startAngle = readAngleZ();
+   // startAngle = readAngleZ();
    leftSpeed = 0;  // sett leftSpeed til 0
    rightSpeed = 0; // sett rightSpeed til 0
 }
