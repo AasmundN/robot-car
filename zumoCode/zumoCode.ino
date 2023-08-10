@@ -19,7 +19,7 @@ int acc_const = 50;
 
 unsigned long prevAccMillis, lastSpeedChange, prevReadMillis;
 int accPerSec = 100;
-int readPerSec = 20; // må være mindre enn 71, da hver read tar 13-14ms
+int readPerSec = 18; // må være mindre enn 71, da hver read tar 13-14ms
 
 // sensor placeholders
 int8_t leftProxVal, rightProxVal, linePos;
