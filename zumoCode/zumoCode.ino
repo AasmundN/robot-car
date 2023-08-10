@@ -82,8 +82,11 @@ void drive(int8_t l_val, int8_t r_val) {
    digitalWrite(IN1, l_val > 0 ? 0 : 1);
    digitalWrite(IN2, r_val > 0 ? 0 : 1);
 
-   l_val = (maxSpeed / 100) * abs(l_val);
-   r_val = (maxSpeed / 100) * abs(r_val);
+   l_val = abs(l_val);
+   r_val = abs(r_val);
+
+   l_val = l_val > 15 ? (maxSpeed / 100) * l_val : 0;
+   r_val = r_val > 15 ? (maxSpeed / 100) * r_val : 0;
 
    analogWrite(ENA, l_val);
    analogWrite(ENB, r_val);
