@@ -27,10 +27,9 @@ int16_t leftEncoderVal, rightEncoderVal;
 const int lineSensorValues[5] = {0, 0, 0, 0, 0};
 
 // Gyro
-int32_t gyroOffset[3] = {0, 0, 0};
+int32_t gyroOffset, gyroAngleZ;
 uint16_t lastGyroUpdate = 0;
-int32_t gyroAngle[3] = {0, 0, 0};
-#define calibrateCount 2048
+#define calibrateCount 4096
 
 // utility
 const unsigned int microSecPerByte = ceil(10.0 / 115200.0 * 100000);
@@ -58,20 +57,15 @@ void calibrateLineSensors() {
 }
 
 void calibrateGyro() {
-   gyroOffset[0] = 0;
-   gyroOffset[1] = 0;
-   gyroOffset[2] = 0;
+   // calibrate Z angle of the gyroscope
+   gyroOffset = 0;
    for (int i = 0; i < calibrateCount; i++) {
       while (!imu.gyroDataReady())
          ;
       imu.readGyro();
-      gyroOffset[0] += imu.g.x;
-      gyroOffset[1] += imu.g.y;
-      gyroOffset[2] += imu.g.z;
+      gyroOffset += imu.g.z;
    }
-   gyroOffset[0] /= calibrateCount;
-   gyroOffset[1] /= calibrateCount;
-   gyroOffset[2] /= calibrateCount;
+   gyroOffset /= calibrateCount;
 }
 
 void updateAngle() {
@@ -80,9 +74,7 @@ void updateAngle() {
       uint16_t dt = m - lastGyroUpdate;
       lastGyroUpdate = m;
       imu.readGyro();
-      gyroAngle[0] += (((int64_t)((imu.g.x - gyroOffset[0]) * dt)) * 14680064 / 17578125);
-      gyroAngle[1] += (((int64_t)((imu.g.y - gyroOffset[1]) * dt)) * 14680064 / 17578125);
-      gyroAngle[2] += (((int64_t)((imu.g.z - gyroOffset[2]) * dt)) * 14680064 / 17578125);
+      gyroAngleZ += (((int64_t)((imu.g.z - gyroOffset) * dt)) * 14680064 / 17578125);
    }
 }
 
@@ -221,10 +213,8 @@ void loop() {
       rightEncoderVal = encoders.getCountsAndResetRight();
       Serial1.write((leftEncoderVal + rightEncoderVal) / 4); // send avg devided by two
 
-      // send angle
-      Serial1.write((int8_t)(((gyroAngle[0] >> 16) * 360) >> 17));
-      Serial1.write((int8_t)(((gyroAngle[1] >> 16) * 360) >> 17));
-      Serial1.write((int8_t)(((gyroAngle[2] >> 16) * 360) >> 17));
+      // send Z angle
+      Serial1.write((int8_t)(((gyroAngleZ >> 16) * 360) >> 17));
 
       // send and update read time
       Serial1.write(millis() - prevReadMillis);

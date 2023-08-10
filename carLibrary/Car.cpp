@@ -19,7 +19,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 #define NTCpin 36
 
-int8_t dataPlaceholder[7] = {0, 0, 0, 0, 0, 0, 0};
+int8_t dataPlaceholder[5] = {0, 0, 0, 0, 0};
 
 unsigned long prevDataMillis[3] = {0, 0, 0};
 int dataPerSec = 10;
@@ -114,22 +114,14 @@ int readEncoders() {
    return 2 * dataPlaceholder[2];
 }
 
-int readAngleX() {
-   return 2 * dataPlaceholder[3];
-}
-
-int readAngleY() {
-   return 2 * dataPlaceholder[4];
-}
-
 int readAngleZ() {
-   return 2 * dataPlaceholder[5];
+   return 2 * dataPlaceholder[3];
 }
 
 int getReadTime() {
    // return the time it took to read the sensors once
    // this can be used to calculate the speed
-   return dataPlaceholder[6];
+   return dataPlaceholder[4];
 }
 
 void Car::handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
@@ -250,8 +242,8 @@ void Car::initWebSocket() {
 void secondCoreLoop(void *pvParameters) {
    for (;;) {
       ws.cleanupClients();
-      if (Serial2.available() >= 7) {
-         for (int i = 0; i < 7; i++)
+      if (Serial2.available() >= 5) {
+         for (int i = 0; i < 5; i++)
             dataPlaceholder[i] = Serial2.read();
          while (Serial2.available())
             Serial2.read();
