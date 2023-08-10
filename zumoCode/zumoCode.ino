@@ -9,6 +9,8 @@
 #define ENB 9  // Motor 2
 #define IN2 15 // Wheel direction 2
 
+#define MOTOR_LOWER_LIMIT 40
+
 int maxSpeed = 200;
 bool isCalibrated, lineColor;
 
@@ -27,8 +29,8 @@ const int lineSensorValues[5];
 
 // Gyro
 int32_t gyroOffset, gyroAngleZ;
-uint16_t lastGyroUpdate;
-#define calibrateCount 4096
+uint16_t lastGyroUpdate = 0;
+#define CALIBRATE_COUNT 4096
 
 // utility
 const unsigned int microSecPerByte = ceil(10.0 / 115200.0 * 100000);
@@ -58,13 +60,13 @@ void calibrateLineSensors() {
 void calibrateGyro() {
    // calibrate Z angle of the gyroscope
    gyroOffset = 0;
-   for (int i = 0; i < calibrateCount; i++) {
+   for (int i = 0; i < CALIBRATE_COUNT; i++) {
       while (!imu.gyroDataReady())
          ;
       imu.readGyro();
       gyroOffset += imu.g.z;
    }
-   gyroOffset /= calibrateCount;
+   gyroOffset /= CALIBRATE_COUNT;
 }
 
 void updateAngle() {
@@ -81,8 +83,11 @@ void drive(int8_t l_val, int8_t r_val) {
    digitalWrite(IN1, l_val > 0 ? 0 : 1);
    digitalWrite(IN2, r_val > 0 ? 0 : 1);
 
-   l_val = (maxSpeed / 100) * abs(l_val);
-   r_val = (maxSpeed / 100) * abs(r_val);
+   l_val = abs(l_val);
+   r_val = abs(r_val);
+
+   l_val = l_val > MOTOR_LOWER_LIMIT ? (maxSpeed / 100) * l_val : 0;
+   r_val = r_val > MOTOR_LOWER_LIMIT ? (maxSpeed / 100) * r_val : 0;
 
    analogWrite(ENA, l_val);
    analogWrite(ENB, r_val);

@@ -8,9 +8,6 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-#define LINE 0
-#define PROX 1
-
 #define UP 0
 #define DOWN 1
 
