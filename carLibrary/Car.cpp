@@ -6,41 +6,36 @@
 
 #define port 80
 
-AsyncWebServer server(port);
-AsyncWebSocket ws("/ws");
-
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
-
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 #define RXD2 16
 #define TXD2 17
 
-#define NTCpin 36
+AsyncWebServer server(port);
+AsyncWebSocket ws("/ws");
 
-int8_t dataPlaceholder[5] = {0, 0, 0, 0, 0};
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
-unsigned long prevDataMillis[3] = {0, 0, 0};
+unsigned long prevDataMillis[3];
 int dataPerSec = 10;
 
 unsigned long prevDriveMillis = 0;
 int drivePerSec = 50;
 
-bool isCalibrated = false;
-bool lineColor = false;
+bool isCalibrated, lineColor = false;
 
 TaskHandle_t secondCore;
 
 Car::Car(char *ssid, char *password) : ssid{ssid}, password{password} {};
 
-void writeDisplay(String str, int line) {
-   display.setCursor(0, line * 8);
+void writeDisplay(String str, int displayLine) {
+   display.setCursor(0, displayLine * 8);
    display.println(str);
    display.display();
 }
 
-void drive(int leftSpeed, int rightSpeed) {
+void Car::drive(int leftSpeed, int rightSpeed) {
    if ((millis() - prevDriveMillis) < (1000 / drivePerSec) && (leftSpeed || rightSpeed))
       return;
 
@@ -64,7 +59,7 @@ void drive(int leftSpeed, int rightSpeed) {
    prevDriveMillis = millis();
 }
 
-void sendData(int graph, double data) {
+void Car::sendData(int graph, double data) {
    if ((millis() - prevDataMillis[graph - 1]) < (1000 / dataPerSec))
       return;
    if (graph < 1)
@@ -76,28 +71,7 @@ void sendData(int graph, double data) {
    prevDataMillis[graph - 1] = millis();
 }
 
-float bitToVolt(int n) {
-   float volt = (float)n * 3.3 / 4095;
-   return volt;
-}
-
-double readNTC() {
-   float voltNTC = bitToVolt(analogRead(NTCpin));
-   float voltR10 = 3.3 - voltNTC;
-   float RNTC = (voltNTC / voltR10) * 10000;
-   double coeff = 0.000253164556962; // 1/B
-   double tempcoeff = 0.00335402;    // 1/T0
-   double Rcoeff = RNTC / 10000;     // R/R0
-   double temperatureK = 1 / (tempcoeff + coeff * log(Rcoeff));
-   double temperatureC = temperatureK - 273.15;
-   return temperatureC;
-}
-
-int readProx() {
-   return dataPlaceholder[0];
-}
-
-int readLine() {
+void Car::calibrateLine() {
    if (!isCalibrated) {
       if (lineColor)
          Serial2.write('C');
@@ -105,23 +79,6 @@ int readLine() {
          Serial2.write('c');
       isCalibrated = true;
    }
-   return dataPlaceholder[1];
-}
-
-int readEncoders() {
-   // multiply value by two in order to get the correct value
-   // this is due to UART package only containing one byte
-   return 2 * dataPlaceholder[2];
-}
-
-int readAngleZ() {
-   return 2 * dataPlaceholder[3];
-}
-
-int getReadTime() {
-   // return the time it took to read the sensors once
-   // this can be used to calculate the speed
-   return dataPlaceholder[4];
 }
 
 void Car::handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
@@ -240,11 +197,21 @@ void Car::initWebSocket() {
 }
 
 void secondCoreLoop(void *pvParameters) {
+
+   static Car *car = (Car *)pvParameters;
+
    for (;;) {
       ws.cleanupClients();
       if (Serial2.available() >= 5) {
-         for (int i = 0; i < 5; i++)
-            dataPlaceholder[i] = Serial2.read();
+         for (int i = 0; i < 5; i++) {
+            // encoder and gyro values are devided by two on the zumo
+            if (i == ENCODERS || i == GYRO)
+               car->data[i].value = 2 * Serial2.read();
+
+            car->data[i].value = Serial2.read();
+            car->data[i].flag = true;
+         }
+
          while (Serial2.available())
             Serial2.read();
       }
@@ -268,7 +235,7 @@ void Car::initCar(bool color) {
        secondCoreLoop,
        "secondCore",
        10000,
-       NULL,
+       this,
        1,
        &secondCore,
        1);

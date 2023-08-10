@@ -17,6 +17,17 @@
 #define BLACK 0
 #define WHITE 1
 
+#define PROXIMITY 0
+#define LINE 1
+#define ENCODERS 2
+#define GYRO 3
+#define READ_TIME 4
+
+typedef struct {
+   int8_t value;
+   bool flag;
+} dataPoint;
+
 class Car {
  private:
    const char *ssid;
@@ -30,17 +41,11 @@ class Car {
                        void *arg, uint8_t *data, size_t len);
    static void initWebSocket();
    void initCar(bool color);
+   dataPoint data[5];
+   void calibrateLine();
+   void sendData(int graph, double data);
+   void drive(int leftSpeed, int rightSpeed);
 };
-
-double readNTC();
-int readLine();
-int readProx();
-int readEncoders();
-int readAngleZ();
-int getReadTime();
-void sendData(int graph, double data);
-
-void drive(int leftSpeed, int rightSpeed);
 
 void w(bool knapp);
 void a(bool knapp);
