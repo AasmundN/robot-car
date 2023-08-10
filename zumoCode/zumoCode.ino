@@ -10,8 +10,7 @@
 #define IN2 15 // Wheel direction 2
 
 int maxSpeed = 200;
-bool isCalibrated = false;
-bool lineColor = false;
+bool isCalibrated, lineColor;
 
 // acceleration
 int actual_l_val, actual_r_val, ideal_l_val, ideal_r_val;
@@ -19,16 +18,16 @@ int acc_const = 50;
 
 unsigned long prevAccMillis, lastSpeedChange, prevReadMillis;
 int accPerSec = 100;
-int readPerSec = 18; // må være mindre enn 71, da hver read tar 13-14ms
+int readPerSec = 18;
 
 // sensor placeholders
 int8_t leftProxVal, rightProxVal, linePos;
 int16_t leftEncoderVal, rightEncoderVal;
-const int lineSensorValues[5] = {0, 0, 0, 0, 0};
+const int lineSensorValues[5];
 
 // Gyro
 int32_t gyroOffset, gyroAngleZ;
-uint16_t lastGyroUpdate = 0;
+uint16_t lastGyroUpdate;
 #define calibrateCount 4096
 
 // utility
