@@ -238,7 +238,6 @@ void Car::initCar() {
    while (WiFi.status() != WL_CONNECTED) {
       delay(1000);
       Serial.println("Kobler til WIFI...");
-      Serial.println(WiFi.status());
    }
 
    // Print ESP Local IP Address
