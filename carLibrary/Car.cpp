@@ -6,16 +6,11 @@
 
 #define port 80
 
-#define SCREEN_WIDTH 128
-#define SCREEN_HEIGHT 64
-
 #define RXD2 16
 #define TXD2 17
 
 AsyncWebServer server(port);
 AsyncWebSocket ws("/ws");
-
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 unsigned long prevDataMillis[3];
 int dataPerSec = 10;
@@ -29,17 +24,12 @@ TaskHandle_t secondCore;
 
 Car::Car(char *ssid, char *password) : ssid{ssid}, password{password} {};
 
-void writeDisplay(String str, int displayLine) {
-   display.setCursor(0, displayLine * 8);
-   display.println(str);
-   display.display();
-}
-
 void Car::drive(int leftSpeed, int rightSpeed) {
    if ((millis() - prevDriveMillis) < (1000 / drivePerSec) && (leftSpeed || rightSpeed))
       return;
    if ((prevLeftSpeed == leftSpeed) && (prevRightSpeed == rightSpeed))
       return;
+
    prevLeftSpeed = leftSpeed;
    prevRightSpeed = rightSpeed;
 
@@ -70,6 +60,7 @@ void Car::sendData(int graph, double data) {
       graph = 1;
    if (graph > 3)
       graph = 3;
+
    data = floor(data * 10) / 10;
    ws.textAll(String(graph) + String(data));
    prevDataMillis[graph - 1] = millis();
@@ -239,17 +230,7 @@ void Car::initCar() {
        &secondCore,
        1);
 
-   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
-      Serial.println(F("SSD1306 allocation failed"));
-      for (;;)
-         ;
-   }
-
    delay(2000);
-   display.clearDisplay();
-   display.setTextSize(1);
-   display.setTextColor(WHITE);
-   writeDisplay("Skjerm klar", 1);
 
    // Connect to Wi-Fi
    WiFi.begin(ssid, password);
@@ -258,20 +239,11 @@ void Car::initCar() {
       delay(1000);
       Serial.println("Kobler til WIFI...");
       Serial.println(WiFi.status());
-      display.clearDisplay();
-      writeDisplay("Kobler til WIFI...", 1);
    }
 
    // Print ESP Local IP Address
    Serial.print("Koblet til internett med IP: ");
    Serial.println(WiFi.localIP());
-   //  Serial.println(":" + static_cast<String>(port));
-   display.clearDisplay();
-   writeDisplay("Koblet til med IP: ", 1);
-   display.print(WiFi.localIP());
-   //  display.println(":" + static_cast<String>(port));
-   // display.println("WiFi: " + static_cast<String>(ssid)); //Seb la inn
-   display.display();
 
    initWebSocket();
 

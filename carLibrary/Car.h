@@ -5,8 +5,6 @@
 #include <ESPAsyncWebServer.h> //library change: https://github.com/me-no-dev/ESPAsyncWebServer/blob/master/src/WebResponseImpl.h#L62
 
 #include "Wire.h"
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
 
 #define UP 0
 #define DOWN 1
