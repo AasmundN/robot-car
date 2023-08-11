@@ -68,7 +68,7 @@ car.drive(0,0);
 car.drive(-50, 50);
 ```
 
-Driving with a speed less than _40_ can be harmful to the motors. A `MOTOR_LOWOR_LIMIT` has therefor been placed on the drive function. Trying the drive with low speeds will result in the car stopping.
+Driving with a speed less than _40_ can be harmful to the motors. A `MOTOR_LOWER_LIMIT` has therefor been placed on the drive function. Trying the drive with low speeds will result in the car stopping.
 
 ### Sensor data
 
