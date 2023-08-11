@@ -9,7 +9,7 @@
 #define ENB 9  // Motor 2
 #define IN2 15 // Wheel direction 2
 
-#define MOTOR_LOWER_LIMIT 40
+#define MOTOR_LOWER_LIMIT 30
 
 int maxSpeed = 200;
 bool lineColor;
