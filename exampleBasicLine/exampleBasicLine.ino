@@ -1,9 +1,3 @@
-// Dette er eksempelkode 1, som er ment som en enkel måte å fullføre oppgavene
-// på.
-
-// Merk at koden her kun er ment som et eksempel og ikke en fasit.
-// Det er mange måter å løse oppgavene på.
-
 #include "Car.h"
 
 Car car("ruter_cot", "ESP_32_is_best");
@@ -12,121 +6,117 @@ void setup() {
    car.initCar();
 }
 
-// lag variabler her
-bool linemode = false; // variabel for å skru av og på linjefølger
-int linjetall;         // variabel for å lagre dataen fra linjesensorene
+bool linemode = false;
+int linjetall;
 
-void loop() { // ikke fjern denne linjen!
+void loop() {
 
-   // skriv kode for å sende data her
-   car.sendData(1, car.data[PROXIMITY].value); // send avstandsdata til graf 1
+   car.sendData(1, car.data[PROXIMITY].value);
 
-   if (linemode == true) { // sjekk om linjefølgeren skal være på
-      // skriv linjefølger-kode her
-      linjetall = car.data[LINE].value; // avles og lagre linjedata i variabelen linjetall
+   if (linemode == true) {
 
-      car.sendData(2, linjetall); // send linjedata til graf 2
+      linjetall = car.data[LINE].value;
 
-      if (linjetall < -10) { // sjekk om linjen er til venstre for bilen
-         car.drive(0, 60);   // sving til venstre
+      car.sendData(2, linjetall);
+
+      if (linjetall < -10) {
+         car.drive(0, 60);
       }
-      if (linjetall > 10) { // sjekk om linjen er til høyre for bilen
-         car.drive(60, 0);  // sving til høyre
+      if (linjetall > 10) {
+         car.drive(60, 0);
       }
-      if (linjetall > -10 && linjetall < 10) { // sjekk om linje er under bilen
-         car.drive(60, 60);                    // kjør rett fram
+      if (linjetall > -10 && linjetall < 10) {
+         car.drive(60, 60);
       }
    }
 }
 
-// dette er koden for kjøre framover
-void w(bool button) { // ikke fjern denne linjen!
+void w(bool button) {
    if (button == DOWN) {
-      // dette skjer når knappen trykkes ned
+
       car.drive(100, 100);
    }
    if (button == UP) {
-      // dette skjer når knappen slippes opp
+
       car.drive(0, 0);
    }
 }
 
-void a(bool button) { // ikke fjern denne linjen!
-   // BEGYNN HER!
+void a(bool button) {
+
    if (button == DOWN) {
-      // dette skjer når knappen trykkes ned
+
       car.drive(-100, 100);
    }
    if (button == UP) {
-      // dette skjer når knappen slippes opp
+
       car.drive(0, 0);
    }
 }
 
-void s(bool button) { // ikke fjern denne linjen!
-   // skriv kode her
+void s(bool button) {
+
    if (button == DOWN) {
-      // dette skjer når knappen trykkes ned
+
       car.drive(-100, -100);
    }
    if (button == UP) {
-      // dette skjer når knappen slippes opp
+
       car.drive(0, 0);
    }
 }
 
-void d(bool button) { // ikke fjern denne linjen!
-   // skriv kode her
+void d(bool button) {
+
    if (button == DOWN) {
-      // dette skjer når knappen trykkes ned
+
       car.drive(100, -100);
    }
    if (button == UP) {
-      // dette skjer når knappen slippes opp
+
       car.drive(0, 0);
    }
 }
 
-void e(bool button) { // ikke fjern denne linjen!
-   // skriv kode her
+void e(bool button) {
+
    if (button == DOWN) {
-      // dette skjer når knappen trykkes ned
+
       car.drive(100, 0);
    }
    if (button == UP) {
-      // dette skjer når knappen slippes opp
+
       car.drive(0, 0);
    }
 }
 
-void q(bool button) { // ikke fjern denne linjen!
-   // skriv kode her
+void q(bool button) {
+
    if (button == DOWN) {
-      // dette skjer når knappen trykkes ned
+
       car.drive(0, 100);
    }
    if (button == UP) {
-      // dette skjer når knappen slippes opp
+
       car.drive(0, 0);
    }
 }
 
-void triangle(bool button) { // ikke fjern denne linjen!
-   // skriv kode her
+void triangle(bool button) {
+
    if (button == DOWN) {
       car.calibrateLine(BLACK);
-      linemode = true; // skru på linjefølging
+      linemode = true;
    }
 }
 
-void circle(bool button) { // ikke fjern denne linjen!
-   // skriv kode her
+void circle(bool button) {
+
    if (button == DOWN) {
-      linemode = false; // skru av linjefølging
-      car.drive(0, 0);  // stopp bilen
+      linemode = false;
+      car.drive(0, 0);
    }
 }
 
-void square(bool button) { // ikke fjern denne linjen!
-   // skriv kode her
+void square(bool button) {
 }

@@ -1,8 +1,3 @@
-// Dette er eksempelkode 2, som er ment som en litt mer avansert måte å fullføre oppgavene på.
-
-// Merk at koden her kun er ment som et eksempel og ikke en fasit.
-// Det er mange måter å løse oppgavene på.
-
 #include "Car.h"
 
 Car car("ruter_cot", "ESP_32_is_best");
@@ -11,26 +6,24 @@ void setup() {
    car.initCar();
 }
 
-// lag variabler her
-bool linemode = false; // variabel for å skru av og på linjefølger
+bool linemode = false;
 
-int speed = 50; // variabel som lagrer hastigheten vi vil kjøre med
+int speed = 50;
 
-int leftSpeed = 0;  // variabel som lagrer hastigheten venstre belte kjører med akkurat nå
-int rightSpeed = 0; // variabel som lagrer hastigheten høyre belte kjører med akkurat nå
+int leftSpeed = 0;
+int rightSpeed = 0;
 
-float P = 1;        // Proporsjonal forsterkning
-float I = 0.000001; // Integral forsterkning
-float D = 0.001;    // Derivat forsterkning
+float P = 1;
+float I = 0.000001;
+float D = 0.001;
 
-int eprev = 0; // Den forrige feilverdien
-float i = 0;   // Diskret integral
-int der = 0;   // Diskret derivat
-int err = 0;   // Feilverdi
+int eprev = 0;
+float i = 0;
+int der = 0;
+int err = 0;
 
-float u; // Pådrag
+float u;
 
-// Metningsfunksjon
 float sat(float x, float maxlim, float minlim) {
    if (x > maxlim)
       return maxlim;
@@ -39,15 +32,14 @@ float sat(float x, float maxlim, float minlim) {
    return x;
 }
 
-void loop() { // ikke fjern denne linjen!
+void loop() {
 
-   // skriv kode for å sende data her
    car.sendData(1, car.data[PROXIMITY].value);
    car.sendData(2, car.data[ENCODERS].value);
    car.sendData(3, car.data[GYRO].value);
 
-   if (linemode == true) { // sjekk om linjefølger skal være på
-      // PID regulator
+   if (linemode == true) {
+
       eprev = err;
       err = car.data[LINE].value;
       i = sat(i + I * err, 100, -100);
@@ -60,27 +52,24 @@ void loop() { // ikke fjern denne linjen!
       } else {
          car.drive(100 - abs(u), 100);
       }
-   } else {                             // om linjefølger ikke skal være på så gjør dette
-      car.drive(leftSpeed, rightSpeed); // kjør med hastigheten bestemt av de to variablene
+   } else {
+      car.drive(leftSpeed, rightSpeed);
    }
 }
 
-// dette er koden for kjøre framover
-// å implentere kjøringen på denne måten gjør at man kan trykke inn flere knapper og komninere hastighetene
-// for eksempel, om man trykker w og s samtidig vil bilen stå stille
-void w(bool button) { // ikke fjern denne linjen!
+void w(bool button) {
    if (button == DOWN) {
-      leftSpeed += speed;  // legg til hastighetsvariabelen speed til leftSpeed
-      rightSpeed += speed; // legg til hastighetsvariabelen speed til rightSpeed
+      leftSpeed += speed;
+      rightSpeed += speed;
    }
    if (button == UP) {
-      leftSpeed -= speed;  // trekk fra hastighetsvariabelen speed til leftSpeed
-      rightSpeed -= speed; // trekk fra hastighetsvariabelen speed til rightSpeed
+      leftSpeed -= speed;
+      rightSpeed -= speed;
    }
 }
 
-void a(bool button) { // ikke fjern denne linjen!
-   // BEGYNN HER!
+void a(bool button) {
+
    if (button == DOWN) {
       leftSpeed -= speed;
       rightSpeed += speed;
@@ -91,8 +80,8 @@ void a(bool button) { // ikke fjern denne linjen!
    }
 }
 
-void s(bool button) { // ikke fjern denne linjen!
-   // skriv kode her
+void s(bool button) {
+
    if (button == DOWN) {
       leftSpeed -= speed;
       rightSpeed -= speed;
@@ -103,8 +92,8 @@ void s(bool button) { // ikke fjern denne linjen!
    }
 }
 
-void d(bool button) { // ikke fjern denne linjen!
-   // skriv kode her
+void d(bool button) {
+
    if (button == DOWN) {
       leftSpeed += speed;
       rightSpeed -= speed;
@@ -115,8 +104,8 @@ void d(bool button) { // ikke fjern denne linjen!
    }
 }
 
-void e(bool button) { // ikke fjern denne linjen!
-   // skriv kode her
+void e(bool button) {
+
    if (button == DOWN) {
       leftSpeed += speed;
    }
@@ -125,8 +114,8 @@ void e(bool button) { // ikke fjern denne linjen!
    }
 }
 
-void q(bool button) { // ikke fjern denne linjen!
-   // skriv kode her
+void q(bool button) {
+
    if (button == DOWN) {
       rightSpeed += speed;
    }
@@ -135,25 +124,25 @@ void q(bool button) { // ikke fjern denne linjen!
    }
 }
 
-void triangle(bool button) { // ikke fjern denne linjen!
-   // skriv kode her
+void triangle(bool button) {
+
    if (button == UP)
-      return;            // om knappen slippes opp så avslutt kodesnutten her. Altså vil ikke linjene under kjøres
-   linemode = !linemode; // endre linemode-variabelen til det motsatte av det den er nå. For eksempel, om linemode nå er lik false vil den bli byttet til true
+      return;
+   linemode = !linemode;
    if (linemode)
       car.calibrateLine(BLACK);
-   leftSpeed = 0;  // sett leftSpeed til 0
-   rightSpeed = 0; // sett rightSpeed til 0
+   leftSpeed = 0;
+   rightSpeed = 0;
 }
 
-void circle(bool button) { // ikke fjern denne linjen!
-   // skriv kode her
+void circle(bool button) {
+
    if (button)
-      speed -= 10; // trekk fra 10 fra hastigheten
+      speed -= 10;
 }
 
-void square(bool button) { // ikke fjern denne linjen!
-   // skriv kode her
+void square(bool button) {
+
    if (button)
-      speed += 10; // legg til 10 til hastigheten
+      speed += 10;
 }
