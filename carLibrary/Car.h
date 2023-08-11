@@ -37,9 +37,9 @@ class Car {
    static void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type,
                        void *arg, uint8_t *data, size_t len);
    static void initWebSocket();
-   void initCar(bool color);
+   void initCar();
    dataPoint data[5];
-   void calibrateLine();
+   void calibrateLine(bool lineColor);
    void sendData(int graph, double data);
    void drive(int leftSpeed, int rightSpeed);
 };

@@ -22,8 +22,8 @@ int dataPerSec = 10;
 
 unsigned long prevDriveMillis = 0;
 int drivePerSec = 50;
-
-bool isCalibrated, lineColor = false;
+int prevLeftSpeed = 0;
+int prevRightSpeed = 0;
 
 TaskHandle_t secondCore;
 
@@ -38,6 +38,10 @@ void writeDisplay(String str, int displayLine) {
 void Car::drive(int leftSpeed, int rightSpeed) {
    if ((millis() - prevDriveMillis) < (1000 / drivePerSec) && (leftSpeed || rightSpeed))
       return;
+   if ((prevLeftSpeed == leftSpeed) && (prevRightSpeed == rightSpeed))
+      return;
+   prevLeftSpeed = leftSpeed;
+   prevRightSpeed = rightSpeed;
 
    if (leftSpeed > 100) {
       leftSpeed = 100;
@@ -71,14 +75,11 @@ void Car::sendData(int graph, double data) {
    prevDataMillis[graph - 1] = millis();
 }
 
-void Car::calibrateLine() {
-   if (!isCalibrated) {
-      if (lineColor)
-         Serial2.write('C');
-      else
-         Serial2.write('c');
-      isCalibrated = true;
-   }
+void Car::calibrateLine(bool lineColor) {
+   if (lineColor)
+      Serial2.write('C');
+   else
+      Serial2.write('c');
 }
 
 void Car::handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
@@ -225,10 +226,7 @@ String processor(const String &var) {
    return String();
 }
 
-void Car::initCar(bool color) {
-
-   lineColor = color;
-
+void Car::initCar() {
    Serial.begin(115200);
    Serial2.begin(115200, SERIAL_8N1, RXD2, TXD2);
 
@@ -259,6 +257,7 @@ void Car::initCar(bool color) {
    while (WiFi.status() != WL_CONNECTED) {
       delay(1000);
       Serial.println("Kobler til WIFI...");
+      Serial.println(WiFi.status());
       display.clearDisplay();
       writeDisplay("Kobler til WIFI...", 1);
    }
