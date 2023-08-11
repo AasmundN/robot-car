@@ -80,6 +80,10 @@
       "variant": "cpp",
       "vector": "cpp",
       "__memory": "cpp",
-      "filesystem": "cpp"
+      "filesystem": "cpp",
+      "list": "cpp",
+      "xhash": "cpp",
+      "xstring": "cpp",
+      "xutility": "cpp"
    }
 }
