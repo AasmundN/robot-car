@@ -9,7 +9,7 @@
 Car car("ruter_cot", "ESP_32_is_best");
 
 void setup() {
-   car.initCar(BLACK); // BLACK for svart linje og WHITE for hvit linje
+   car.initCar();
 }
 
 // lag variabler her
@@ -114,7 +114,7 @@ void q(bool button) { // ikke fjern denne linjen!
 void triangle(bool button) { // ikke fjern denne linjen!
    // skriv kode her
    if (button == DOWN) {
-      car.calibrateLine();
+      car.calibrateLine(BLACK);
       linemode = true; // skru på linjefølging
    }
 }

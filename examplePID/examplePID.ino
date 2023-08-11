@@ -8,7 +8,7 @@
 Car car("ruter_cot", "ESP_32_is_best");
 
 void setup() {
-   car.initCar(BLACK); // BLACK for svart linje og WHITE for hvit linje
+   car.initCar();
 }
 
 // lag variabler her
@@ -138,12 +138,12 @@ void q(bool button) { // ikke fjern denne linjen!
 void triangle(bool button) { // ikke fjern denne linjen!
    // skriv kode her
    if (button == UP)
-      return; // om knappen slippes opp så avslutt kodesnutten her. Altså vil ikke linjene under kjøres
-
-   car.calibrateLine();
+      return;            // om knappen slippes opp så avslutt kodesnutten her. Altså vil ikke linjene under kjøres
    linemode = !linemode; // endre linemode-variabelen til det motsatte av det den er nå. For eksempel, om linemode nå er lik false vil den bli byttet til true
-   leftSpeed = 0;        // sett leftSpeed til 0
-   rightSpeed = 0;       // sett rightSpeed til 0
+   if (linemode)
+      car.calibrateLine(BLACK);
+   leftSpeed = 0;  // sett leftSpeed til 0
+   rightSpeed = 0; // sett rightSpeed til 0
 }
 
 void circle(bool button) { // ikke fjern denne linjen!
