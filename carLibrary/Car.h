@@ -19,7 +19,7 @@
 #define READ_TIME 4
 
 typedef struct {
-   int8_t value;
+   int value;
    bool flag;
 } dataPoint;
 

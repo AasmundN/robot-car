@@ -198,9 +198,9 @@ void secondCoreLoop(void *pvParameters) {
          for (int i = 0; i < 5; i++) {
             // encoder and gyro values are devided by two on the zumo
             if (i == ENCODERS || i == GYRO)
-               car->data[i].value = 2 * Serial2.read();
+               car->data[i].value = 2 * (int)Serial2.read();
             else
-               car->data[i].value = Serial2.read();
+               car->data[i].value = (int)Serial2.read();
 
             car->data[i].flag = true;
          }
