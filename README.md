@@ -43,7 +43,7 @@ void setup() {
 
 ### Buttons and driving
 
-The `carLibrary` exposes nine void functions named `w`, `a`, `s`, `d`. `e`, `q`, `triangle`, `circle` and `square`. These are called when the corresponding buttons on the control panel are pressed, and released. They all take a parameter `bool button` inticating whether the button is pressed down or released. The defined variables `UP` and `DOWN` can be used to check the button direction.
+The `carLibrary` exposes nine void functions named `w`, `a`, `s`, `d`. `e`, `q`, `triangle`, `circle` and `square`. These are called when the corresponding buttons on the control panel are pressed, and released. They all take a parameter `bool button` inticating whether the button is pressed down or released. The defined helpers `UP` and `DOWN` can be used to check the button direction.
 
 ```cpp
 void w(bool button) {
@@ -68,7 +68,7 @@ car.drive(0,0);
 car.drive(-50, 50);
 ```
 
-Driving with a speed less than _40_ can be harmful to the motors. A `MOTOR_LOWER_LIMIT` has therefor been placed on the drive function. Trying the drive with low speeds will result in the car stopping.
+Driving with a speed less than _40_ can be harmful to the motors. A `MOTOR_LOWER_LIMIT` has therefor been placed on the drive function. Trying to drive with low speeds will result in the car stopping.
 
 ### Sensor data
 
@@ -85,7 +85,7 @@ if (car.data[PROXIMITY].flag) {
 }
 ```
 
-The available data can be fetched using the defiend helpers:
+The available data can be fetched using the defined helpers.
 | Data | Range | Details |
 |----- | :-----: | ----- |
 | PROXIMITY | 0 &rarr; 12 | The closer the object the higher the value. |
@@ -95,8 +95,8 @@ The available data can be fetched using the defiend helpers:
 | GYRO | -180 &rarr; 180 | Car angle along the _z_ axis. |
 
 **Calibrating**
-- The gyroscope is calibrated in the Zumo car setup. It is therefor important that the car remains still when it is turned on.
-- To calibrate the line sensors use the member function `calibrateLine`. This accepts a helper `BLACK` or `WHITE` indicating whether the car should read a dark line on the light background or the opposite. The car must be placed on a line when calibrating.
+- The gyroscope is calibrated in the Zumo car setup. It is therefor important that the car remains still when it is turned on. The buzzer will sound when calibrating is done, which usually takes around seven seconds.
+- To calibrate the line sensors use the member function `calibrateLine`. This accepts a helper `BLACK` or `WHITE` indicating whether the car should read a dark line on a light background or the opposite. The car must be placed on a line when calibrating.
 
 ```cpp
 // follow dark line
@@ -109,7 +109,7 @@ The control panel can graph three seperate data streams. The member function `se
 
 ```cpp
 // send gyroscope data to graph 1
-car.sendData(1, car.data[GYRO[.valule);
+car.sendData(1, car.data[GYRO].value);
 
 // send variable speed to graph 3
 car.sendData(3, speed);
