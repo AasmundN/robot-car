@@ -3,7 +3,7 @@
 Car car("ruter_cot", "ESP_32_is_best");
 
 void setup() {
-   car.initCar(BLACK);
+   car.initCar();
 }
 
 bool turnResistMode = false;

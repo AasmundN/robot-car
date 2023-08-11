@@ -129,6 +129,7 @@ void triangle(bool button) {
    if (button == UP)
       return;
    linemode = !linemode;
+   
    if (linemode)
       car.calibrateLine(BLACK);
    leftSpeed = 0;
