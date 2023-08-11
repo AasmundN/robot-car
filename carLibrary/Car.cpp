@@ -6,38 +6,32 @@
 
 #define port 80
 
-#define SCREEN_WIDTH 128
-#define SCREEN_HEIGHT 64
-
 #define RXD2 16
 #define TXD2 17
 
 AsyncWebServer server(port);
 AsyncWebSocket ws("/ws");
 
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
-
 unsigned long prevDataMillis[3];
 int dataPerSec = 10;
 
 unsigned long prevDriveMillis = 0;
 int drivePerSec = 50;
-
-bool isCalibrated, lineColor = false;
+int prevLeftSpeed = 0;
+int prevRightSpeed = 0;
 
 TaskHandle_t secondCore;
 
 Car::Car(char *ssid, char *password) : ssid{ssid}, password{password} {};
 
-void writeDisplay(String str, int displayLine) {
-   display.setCursor(0, displayLine * 8);
-   display.println(str);
-   display.display();
-}
-
 void Car::drive(int leftSpeed, int rightSpeed) {
    if ((millis() - prevDriveMillis) < (1000 / drivePerSec) && (leftSpeed || rightSpeed))
       return;
+   if ((prevLeftSpeed == leftSpeed) && (prevRightSpeed == rightSpeed))
+      return;
+
+   prevLeftSpeed = leftSpeed;
+   prevRightSpeed = rightSpeed;
 
    if (leftSpeed > 100) {
       leftSpeed = 100;
@@ -66,19 +60,17 @@ void Car::sendData(int graph, double data) {
       graph = 1;
    if (graph > 3)
       graph = 3;
+
    data = floor(data * 10) / 10;
    ws.textAll(String(graph) + String(data));
    prevDataMillis[graph - 1] = millis();
 }
 
-void Car::calibrateLine() {
-   if (!isCalibrated) {
-      if (lineColor)
-         Serial2.write('C');
-      else
-         Serial2.write('c');
-      isCalibrated = true;
-   }
+void Car::calibrateLine(bool lineColor) {
+   if (lineColor)
+      Serial2.write('C');
+   else
+      Serial2.write('c');
 }
 
 void Car::handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
@@ -225,10 +217,7 @@ String processor(const String &var) {
    return String();
 }
 
-void Car::initCar(bool color) {
-
-   lineColor = color;
-
+void Car::initCar() {
    Serial.begin(115200);
    Serial2.begin(115200, SERIAL_8N1, RXD2, TXD2);
 
@@ -241,17 +230,7 @@ void Car::initCar(bool color) {
        &secondCore,
        1);
 
-   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
-      Serial.println(F("SSD1306 allocation failed"));
-      for (;;)
-         ;
-   }
-
    delay(2000);
-   display.clearDisplay();
-   display.setTextSize(1);
-   display.setTextColor(WHITE);
-   writeDisplay("Skjerm klar", 1);
 
    // Connect to Wi-Fi
    WiFi.begin(ssid, password);
@@ -259,20 +238,12 @@ void Car::initCar(bool color) {
    while (WiFi.status() != WL_CONNECTED) {
       delay(1000);
       Serial.println("Kobler til WIFI...");
-      display.clearDisplay();
-      writeDisplay("Kobler til WIFI...", 1);
+      Serial.println(WiFi.status());
    }
 
    // Print ESP Local IP Address
    Serial.print("Koblet til internett med IP: ");
    Serial.println(WiFi.localIP());
-   //  Serial.println(":" + static_cast<String>(port));
-   display.clearDisplay();
-   writeDisplay("Koblet til med IP: ", 1);
-   display.print(WiFi.localIP());
-   //  display.println(":" + static_cast<String>(port));
-   // display.println("WiFi: " + static_cast<String>(ssid)); //Seb la inn
-   display.display();
 
    initWebSocket();
 

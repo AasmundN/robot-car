@@ -9,10 +9,10 @@
 #define ENB 9  // Motor 2
 #define IN2 15 // Wheel direction 2
 
-#define MOTOR_LOWER_LIMIT 40
+#define MOTOR_LOWER_LIMIT 30
 
 int maxSpeed = 200;
-bool isCalibrated, lineColor;
+bool lineColor;
 
 // acceleration
 int actual_l_val, actual_r_val, ideal_l_val, ideal_r_val;
@@ -45,6 +45,8 @@ Zumo32U4Encoders encoders;
 Zumo32U4IMU imu;
 
 void calibrateLineSensors() {
+   Serial.println("Calibrating!");
+   lineSensors.resetCalibration();
    for (uint8_t i = 0; i < 120; i++) {
       if (i > 30 && i <= 90) {
          drive(-100, 100);
@@ -53,7 +55,7 @@ void calibrateLineSensors() {
       }
       lineSensors.calibrate();
    }
-
+   Serial.println("Calibrate done!");
    drive(0, 0);
 }
 
@@ -149,6 +151,7 @@ void loop() {
 
    if (Serial1.available()) {
       char received = (char)Serial1.read();
+      Serial.println(received);
 
       switch (received) {
       case 'k': // Kjør!
@@ -167,18 +170,12 @@ void loop() {
 
       case 'c': // kalibrer linjefølger
          lineColor = false;
-         if (!isCalibrated) {
-            calibrateLineSensors();
-            isCalibrated = true;
-         }
+         calibrateLineSensors();
          break;
 
       case 'C': // kalibrer linjefølger
          lineColor = true;
-         if (!isCalibrated) {
-            calibrateLineSensors();
-            isCalibrated = true;
-         }
+         calibrateLineSensors();
          break;
 
       case 'w': // connected to wifi

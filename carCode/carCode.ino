@@ -4,20 +4,12 @@
 Car car("ruter_cot", "ESP_32_is_best");
 
 void setup() {
-   // BLACK for svart linje og WHITE for hvit linje
-   car.initCar(BLACK);
+   car.initCar();
 }
-
-// lag variabler her
-bool linemode = false;
 
 void loop() { // ikke fjern denne linjen!
 
-   // skriv kode for å sende data her
-
-   if (linemode == true) {
-      // skriv linjefølger-kode her
-   }
+   // kode som kjører mange ganger
 }
 
 // dette er koden for kjøre framover

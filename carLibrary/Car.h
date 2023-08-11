@@ -5,8 +5,6 @@
 #include <ESPAsyncWebServer.h> //library change: https://github.com/me-no-dev/ESPAsyncWebServer/blob/master/src/WebResponseImpl.h#L62
 
 #include "Wire.h"
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
 
 #define UP 0
 #define DOWN 1
@@ -37,9 +35,9 @@ class Car {
    static void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type,
                        void *arg, uint8_t *data, size_t len);
    static void initWebSocket();
-   void initCar(bool color);
+   void initCar();
    dataPoint data[5];
-   void calibrateLine();
+   void calibrateLine(bool lineColor);
    void sendData(int graph, double data);
    void drive(int leftSpeed, int rightSpeed);
 };
