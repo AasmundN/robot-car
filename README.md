@@ -90,9 +90,11 @@ The available data can be fetched using the defined helpers.
 |----- | :-----: | ----- |
 | PROXIMITY | 0 &rarr; 12 | The closer the object the higher the value. |
 | LINE | -100 &rarr; 100 | When the line is to the right of the car the number is positive. |
-| ENCODERS | **n/a** | Encoder counts 12 times per wheel rotation. |
+| ENCODERS | **n/a** | Encoder counts 12 times per motor rotation. |
 | READ_TIME | **n/a** | Time corresponding to one encoder reading in _ms_. |
 | GYRO | -180 &rarr; 180 | Car angle along the _z_ axis. |
+
+> **_Motor rotations:_** Because of the 75:1 gear ratio in the motor every 75th motor rotation corresponds to one rotation of the wheel.
 
 **Calibrating**
 - The gyroscope is calibrated in the Zumo car setup. It is therefor important that the car remains still when it is turned on. The buzzer will sound when calibrating is done, which usually takes around seven seconds.
