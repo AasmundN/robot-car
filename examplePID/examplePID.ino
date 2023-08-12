@@ -36,9 +36,9 @@ void loop() {
 
    car.sendData(1, car.data[PROXIMITY].value);
    car.sendData(2, car.data[ENCODERS].value);
-   car.sendData(3, car.data[GYRO].value);
 
    if (linemode == true) {
+      car.sendData(3, car.data[LINE].value);
 
       eprev = err;
       err = car.data[LINE].value;
@@ -129,7 +129,7 @@ void triangle(bool button) {
    if (button == UP)
       return;
    linemode = !linemode;
-   
+
    if (linemode)
       car.calibrateLine(BLACK);
    leftSpeed = 0;
