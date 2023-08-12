@@ -73,6 +73,15 @@ void Car::calibrateLine(bool lineColor) {
       Serial2.write('c');
 }
 
+void Car::calibrateGyro(uint16_t precision) {
+   uint8_t lowerByte = precision & 0xff;
+   uint8_t upperByte = precision >> 8;
+
+   Serial2.write('g');
+   Serial2.write(lowerByte);
+   Serial2.write(upperByte);
+}
+
 void Car::handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
 
    AwsFrameInfo *info = (AwsFrameInfo *)arg;
