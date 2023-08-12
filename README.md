@@ -97,8 +97,12 @@ The available data can be fetched using the defined helpers.
 > **_Motor rotations:_** Because of the 75:1 gear ratio in the motor every 75th motor rotation corresponds to one rotation of the wheel.
 
 **Calibrating**
-- The gyroscope is calibrated in the Zumo car setup. It is therefor important that the car remains still when it is turned on. The buzzer will sound when calibrating is done, which usually takes around seven seconds.
-- To calibrate the line sensors use the member function `calibrateLine`. This accepts a helper `BLACK` or `WHITE` indicating whether the car should read a dark line on a light background or the opposite. The car must be placed on a line when calibrating.
+- To calibrate the gyroscope use the member function `calibrateGyro`. This accepts an unsigned integer indicating the precision of the calibration. This value may typically be in the range of _1024_ to _4096_, although a higher number leads to better precision. **The car must be completely still when calibrating**. The buzzer will sound when calibration is done.
+```cpp
+// calibrate gyro with 2048 as precision
+car.calibrateGyro(2048);
+```
+- To calibrate the line sensors use the member function `calibrateLine`. This accepts a helper `BLACK` or `WHITE` indicating whether the car should read a dark line on a light background or the opposite. The car must be placed on a line when calibrating.  The buzzer will sound when calibration is done.
 
 ```cpp
 // follow dark line

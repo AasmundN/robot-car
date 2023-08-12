@@ -1,7 +1,7 @@
 #include "Car.h"
 
 // nettverksnavn og nettverkspassord byttes ut med navn og passord for det aktuelle nettverket
-Car car("ruter_cot", "ESP_32_is_best");
+Car car("networkName", "networkPassword");
 
 void setup() {
    car.initCar();

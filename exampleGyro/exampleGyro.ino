@@ -15,11 +15,11 @@ int leftSpeed = 0;
 int rightSpeed = 0;
 
 void loop() {
-   car.sendData(1, car.data[GYRO].value);
    car.sendData(2, car.data[ENCODERS].value);
    car.sendData(3, car.data[PROXIMITY].value);
 
    if (turnResistMode == true) {
+      car.sendData(1, car.data[GYRO].value);
       int angle = car.data[GYRO].value;
       int turnspeed = (angle)*100 / 180;
       car.drive(turnspeed * 10, -turnspeed * 10);
@@ -99,7 +99,11 @@ void triangle(bool button) {
 
    if (button == UP)
       return;
+   
    turnResistMode = !turnResistMode;
+
+   if (turnResistMode)
+      car.calibrateGyro(4096);
 
    leftSpeed = 0;
    rightSpeed = 0;

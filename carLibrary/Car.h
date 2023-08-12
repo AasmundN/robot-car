@@ -38,6 +38,7 @@ class Car {
    void initCar();
    dataPoint data[5];
    void calibrateLine(bool lineColor);
+   void calibrateGyro(uint16_t precision);
    void sendData(int graph, double data);
    void drive(int leftSpeed, int rightSpeed);
 };

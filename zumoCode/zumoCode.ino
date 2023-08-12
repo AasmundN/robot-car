@@ -30,7 +30,6 @@ const int lineSensorValues[5];
 // Gyro
 int32_t gyroOffset, gyroAngleZ;
 uint16_t lastGyroUpdate = 0;
-#define CALIBRATE_COUNT 4096
 
 // utility
 const unsigned int microSecPerByte = ceil(10.0 / 115200.0 * 100000);
@@ -45,7 +44,6 @@ Zumo32U4Encoders encoders;
 Zumo32U4IMU imu;
 
 void calibrateLineSensors() {
-   Serial.println("Calibrating!");
    lineSensors.resetCalibration();
    for (uint8_t i = 0; i < 120; i++) {
       if (i > 30 && i <= 90) {
@@ -55,20 +53,25 @@ void calibrateLineSensors() {
       }
       lineSensors.calibrate();
    }
-   Serial.println("Calibrate done!");
    drive(0, 0);
+
+   // calibration done
+   buzzer.play(">g32>>>>>c32");
 }
 
-void calibrateGyro() {
+void calibrateGyro(uint16_t precision) {
    // calibrate Z angle of the gyroscope
    gyroOffset = 0;
-   for (int i = 0; i < CALIBRATE_COUNT; i++) {
+   for (int i = 0; i < precision; i++) {
       while (!imu.gyroDataReady())
          ;
       imu.readGyro();
       gyroOffset += imu.g.z;
    }
-   gyroOffset /= CALIBRATE_COUNT;
+   gyroOffset /= precision;
+
+   // calibration done
+   buzzer.play(">g32>>>>>c32");
 }
 
 void updateAngle() {
@@ -116,7 +119,6 @@ void setup() {
    imu.init();
    imu.enableDefault();
    imu.configureForTurnSensing();
-   calibrateGyro();
 
    delay(100);
    buzzer.play(">g32>>>>>c32");
@@ -180,6 +182,19 @@ void loop() {
 
       case 'w': // connected to wifi
          digitalWrite(LED_PIN, HIGH);
+         break;
+
+      case 'g': // calibrate gyro
+         while (Serial1.available() < 2) {
+            delayMicroseconds(microSecPerByte);
+         }
+
+         uint8_t lowerByte = Serial1.read();
+         uint8_t upperByte = Serial1.read();
+
+         uint16_t precision = (uint16_t)upperByte << 8 | (uint16_t)lowerByte;
+
+         calibrateGyro(precision);
          break;
 
       default:
