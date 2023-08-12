@@ -16,6 +16,9 @@ int rightSpeed = 0;
 
 void loop() {
    car.sendData(1, car.data[GYRO].value);
+   car.sendData(2, car.data[ENCODERS].value);
+   car.sendData(3, car.data[PROXIMITY].value);
+
    if (turnResistMode == true) {
       int angle = car.data[GYRO].value;
       int turnspeed = (angle)*100 / 180;

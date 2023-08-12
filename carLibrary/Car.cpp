@@ -196,11 +196,14 @@ void secondCoreLoop(void *pvParameters) {
       ws.cleanupClients();
       if (Serial2.available() >= 5) {
          for (int i = 0; i < 5; i++) {
-            // encoder and gyro values are devided by two on the zumo
-            if (i == ENCODERS || i == GYRO)
-               car->data[i].value = 2 * (int)Serial2.read();
+            if (i == GYRO)
+               // gyro values are devided by two on the zumo
+               car->data[i].value = 2 * (int)((int8_t)Serial2.read());
+            else if (i == ENCODERS)
+               // encoder values are devided by four on the zumo
+               car->data[i].value = 4 * (int)((int8_t)Serial2.read());
             else
-               car->data[i].value = (int)Serial2.read();
+               car->data[i].value = (int)((int8_t)Serial2.read());
 
             car->data[i].flag = true;
          }

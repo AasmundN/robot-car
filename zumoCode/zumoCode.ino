@@ -212,7 +212,7 @@ void loop() {
       // read and send avg of left and right encoders
       leftEncoderVal = encoders.getCountsAndResetLeft();
       rightEncoderVal = encoders.getCountsAndResetRight();
-      Serial1.write((leftEncoderVal + rightEncoderVal) / 4); // send avg devided by two
+      Serial1.write((int8_t)((leftEncoderVal + rightEncoderVal) / 8)); // send avg devided by two
 
       // send Z angle
       Serial1.write((int8_t)(((gyroAngleZ >> 16) * 360) >> 17));
