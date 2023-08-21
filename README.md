@@ -43,7 +43,7 @@ void setup() {
 
 ### Buttons and driving
 
-The `carLibrary` exposes nine void functions named `w`, `a`, `s`, `d`. `e`, `q`, `triangle`, `circle` and `square`. These are called when the corresponding buttons on the control panel are pressed, and released. They all take a parameter `bool button` inticating whether the button is pressed down or released. The defined helpers `UP` and `DOWN` can be used to check the button direction.
+The `carLibrary` exposes nine void functions named `w`, `a`, `s`, `d`. `e`, `q`, `triangle`, `circle` and `square`. These are called when the corresponding buttons on the control panel are pressed, and released. They all accept a parameter `bool button` indicating whether the button is pressed down or released. The defined helpers `UP` and `DOWN` can be used to check the button direction.
 
 ```cpp
 void w(bool button) {
@@ -51,7 +51,7 @@ void w(bool button) {
       // button is released
    } else if (button == DOWN) {
       // button is pressed
-   }   
+   }
 }
 ```
 
@@ -68,7 +68,7 @@ car.drive(0,0);
 car.drive(-50, 50);
 ```
 
-Driving with a speed less than _30_ can be harmful to the motors. A `MOTOR_LOWER_LIMIT` has therefor been placed on the drive function. Trying to drive with low speeds will result in the car stopping.
+> Driving with low speeds can be harmful to the motors. A `MOTOR_LOWER_LIMIT` has therefor been placed at _30_. Trying to drive with speeds under this limit will result in the car stopping.
 
 ### Sensor data
 
@@ -97,12 +97,15 @@ The available data can be fetched using the defined helpers.
 > **_Motor rotations:_** Because of the 75:1 gear ratio in the motor every 75th motor rotation corresponds to one rotation of the wheel.
 
 **Calibrating**
-- To calibrate the gyroscope use the member function `calibrateGyro`. This accepts an unsigned integer indicating the precision of the calibration. This value may typically be in the range of _1024_ to _4096_, although a higher number leads to better precision. **The car must be completely still when calibrating**. The buzzer will sound when calibration is done.
+
+-  To calibrate the gyroscope use the member function `calibrateGyro`. This accepts an unsigned integer indicating the precision of the calibration. This value may typically be in the range of _1024_ to _4096_, although a higher number leads to better precision. **The car must be completely still when calibrating**. The buzzer will sound when calibration is done.
+
 ```cpp
 // calibrate gyro with 2048 as precision
 car.calibrateGyro(2048);
 ```
-- To calibrate the line sensors use the member function `calibrateLine`. This accepts a helper `BLACK` or `WHITE` indicating whether the car should read a dark line on a light background or the opposite. The car must be placed on a line when calibrating.  The buzzer will sound when calibration is done.
+
+-  To calibrate the line sensors use the member function `calibrateLine`. This accepts a helper `BLACK` or `WHITE` indicating whether the car should read a dark line on a light background or the opposite. **The car must be placed on a line when calibrating**. The buzzer will sound when calibration is done.
 
 ```cpp
 // follow dark line
@@ -122,4 +125,3 @@ car.sendData(3, speed);
 ```
 
 To send continous data call the function in the program loop. The function will update the graph data roughly **10 times per second**.
-
