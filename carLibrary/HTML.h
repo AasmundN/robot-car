@@ -22,6 +22,296 @@ const char index_html[] PROGMEM = R"rawliteral(
         //# sourceMappingURL=swiper-bundle.min.js.map
         </script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no" />
+
+        <style>
+         html,
+         body {
+            margin: 0px;
+            padding: 0px;
+            overflow: scroll;
+            background-color: #eeeeee;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            touch-action: manipulation;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+         }
+   
+         .material-symbols-rounded {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            filter: brightness(0) invert(1);
+            transform: scale(0.8);
+         }
+   
+         #mainContainer {
+            display: flex;
+            align-content: center;
+            justify-content: space-between;
+            box-sizing: border-box;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            height: calc(var(--vh, 1vh) * 100);
+         }
+   
+         .swiper {
+            box-sizing: border-box;
+            display: flex;
+         }
+   
+         .swiper-wrapper {
+            box-sizing: border-box;
+            display: flex;
+         }
+   
+         .swiper-slide {
+            display: flex;
+         }
+   
+         .graphSlide {
+            background-color: #e5e5e5;
+            border-radius: 10px;
+            display: flex;
+            position: relative;
+            flex-flow: column nowrap;
+         }
+   
+         .labelTickBox {
+            cursor: pointer;
+            border-radius: 5px;
+            margin-right: 2%%;
+         }
+   
+         .chartLabels {
+            min-height: 10%%;
+            padding: 5%% 5%% 0 5%%;
+            display: flex;
+            align-items: center;
+            flex-flow: row nowrap;
+            justify-content: space-between;
+         }
+   
+         .chartLabel {
+            display: flex;
+            flex-flow: row nowrap;
+            align-items: center;
+         }
+   
+         .tick0 {
+            background-color: transparent;
+            border: 3px solid #4284e6;
+         }
+   
+         .tick1 {
+            background-color: transparent;
+            border: 3px solid #fbad39;
+         }
+   
+         .tick2 {
+            background-color: transparent;
+            border: 3px solid #e55e97;
+         }
+   
+         .name0 {
+            color: #4284e6;
+         }
+   
+         .name1 {
+            color: #fbad39;
+         }
+   
+         .name2 {
+            color: #e55e97;
+         }
+   
+         ::placeholder {
+            /* Chrome, Firefox, Opera, Safari 10.1+ */
+            color: rgb(56, 56, 56, 0.3);
+            opacity: 1; /* Firefox */
+         }
+   
+         :-ms-input-placeholder {
+            /* Internet Explorer 10-11 */
+            color: rgb(56, 56, 56, 0.3);
+         }
+         ::-ms-input-placeholder {
+            /* Microsoft Edge */
+            color: rgb(56, 56, 56, 0.3);
+         }
+   
+         input {
+            background-color: transparent;
+            border: none;
+            text-decoration: none;
+            outline: none;
+            width: 10%%;
+            font-family: "Helvetica", sans-serif;
+            font-weight: bolder;
+            -webkit-user-select: initial;
+            -khtml-user-select: initial;
+            -moz-user-select: initial;
+            -ms-user-select: initial;
+            user-select: initial;
+         }
+   
+         .chartContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+         }
+   
+         .logoSlide {
+            align-items: center;
+            justify-content: center;
+            align-content: center;
+         }
+   
+         #logoImg {
+            width: 45%%;
+            height: auto;
+         }
+   
+         .outerButtonContainer {
+            flex-grow: 1;
+            display: flex;
+            flex-flow: column nowrap;
+            align-content: flex-end;
+            margin: 3%%;
+         }
+   
+         .buttonContainerAction {
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: space-evenly;
+            align-items: stretch;
+         }
+   
+         .buttonContainerDrive {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            flex-grow: 1;
+         }
+   
+         .buttonContainerAction {
+            min-height: 20%%;
+         }
+   
+         .btn {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+            background-color: #0a2237;
+            border-radius: 10px;
+            margin: 1%%;
+            border: none;
+            cursor: pointer;
+            min-width: 31%%;
+            overflow: hidden;
+         }
+   
+         .actionBtn {
+            min-height: 30%%;
+         }
+   
+         .logoLandscape {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+         }
+   
+         #logoLandscapeImg {
+            height: auto;
+            width: 100%%;
+         }
+   
+         @media screen and (orientation: portrait) {
+            #mainContainer {
+               flex-flow: column nowrap;
+            }
+   
+            .swiper {
+               width: 100vw;
+               height: 57vh;
+               padding: 4%% 4%% 0 4%%;
+               flex-basis: 57vh;
+            }
+   
+            .logoSlide {
+               visibility: visible;
+               width: auto;
+            }
+            .logoLandscape {
+               visibility: hidden;
+               height: 0;
+               padding: 0;
+            }
+            .toggle {
+               transform: scale(0.5);
+            }
+         }
+   
+         @media screen and (orientation: landscape) {
+            #mainContainer {
+               flex-flow: row nowrap;
+            }
+   
+            .swiper {
+               width: 57vw;
+               height: 100vh;
+               height: calc(var(--vh, 1vh) * 100);
+               padding: 3%% 0 3%% 3%%;
+            }
+   
+            .logoSlide {
+               visibility: hidden;
+               width: 0;
+            }
+
+            .logoLandscape {
+               visibility: visible;
+               height: auto;
+               padding: 3%%;
+            }
+            
+            .toggle {
+               transform: scale(0.8);
+            }
+   
+            @media screen and (pointer: fine) and (min-device-width: 500px) {
+               body {
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+               }
+   
+               #mainContainer {
+                  width: 70vw;
+                  height: 60vh;
+                  height: calc(var(--vh, 1vh) * 60);
+               }
+   
+               .swiper {
+                  width: 40vw;
+                  height: 60vh;
+                  height: calc(var(--vh, 1vh) * 60);
+               }
+            }
+         }
+   
+   
+       </style>
       </head>
     <body>
 
@@ -1180,7 +1470,7 @@ const char index_html[] PROGMEM = R"rawliteral(
       var graphNames = document.getElementsByClassName("graphName");
 
       // gives unique localStorage key to each ESP
-      var localStorageKey = "%GRAPH_NAME%";
+      var localStorageKey = "%%GRAPH_NAME%%";
       
       var graph = document.getElementById("chart");
       var ctx = graph.getContext("2d");
@@ -1687,294 +1977,6 @@ const char index_html[] PROGMEM = R"rawliteral(
       }
 
     </script>
-
-    <style>
-      html,
-      body {
-         margin: 0px;
-         padding: 0px;
-         overflow: scroll;
-         background-color: #eeeeee;
-         position: fixed;
-         top: 0;
-         bottom: 0;
-         right: 0;
-         left: 0;
-         touch-action: manipulation;
-         -webkit-user-select: none;
-         -khtml-user-select: none;
-         -moz-user-select: none;
-         -ms-user-select: none;
-         user-select: none;
-      }
-
-      .material-symbols-rounded {
-         display: flex;
-         justify-content: center;
-         align-items: center;
-         border-radius: 10px;
-         filter: brightness(0) invert(1);
-         transform: scale(0.8);
-      }
-
-      #mainContainer {
-         display: flex;
-         align-content: center;
-         justify-content: space-between;
-         box-sizing: border-box;
-         overflow: hidden;
-         width: 100vw;
-         height: 100vh;
-         height: calc(var(--vh, 1vh) * 100);
-      }
-
-      .swiper {
-         box-sizing: border-box;
-         display: flex;
-      }
-
-      .swiper-wrapper {
-         box-sizing: border-box;
-         display: flex;
-      }
-
-      .swiper-slide {
-         display: flex;
-      }
-
-      .graphSlide {
-         background-color: #e5e5e5;
-         border-radius: 10px;
-         display: flex;
-         position: relative;
-         flex-flow: column nowrap;
-      }
-
-      .labelTickBox {
-         cursor: pointer;
-         border-radius: 5px;
-         margin-right: 2%%;
-      }
-
-      .chartLabels {
-         min-height: 10%%;
-         padding: 5%% 5%% 0 5%%;
-         display: flex;
-         align-items: center;
-         flex-flow: row nowrap;
-         justify-content: space-between;
-      }
-
-      .chartLabel {
-         display: flex;
-         flex-flow: row nowrap;
-         align-items: center;
-      }
-
-      .tick0 {
-         background-color: transparent;
-         border: 3px solid #4284e6;
-      }
-
-      .tick1 {
-         background-color: transparent;
-         border: 3px solid #fbad39;
-      }
-
-      .tick2 {
-         background-color: transparent;
-         border: 3px solid #e55e97;
-      }
-
-      .name0 {
-         color: #4284e6;
-      }
-
-      .name1 {
-         color: #fbad39;
-      }
-
-      .name2 {
-         color: #e55e97;
-      }
-
-      ::placeholder {
-         /* Chrome, Firefox, Opera, Safari 10.1+ */
-         color: rgb(56, 56, 56, 0.3);
-         opacity: 1; /* Firefox */
-      }
-
-      :-ms-input-placeholder {
-         /* Internet Explorer 10-11 */
-         color: rgb(56, 56, 56, 0.3);
-      }
-      ::-ms-input-placeholder {
-         /* Microsoft Edge */
-         color: rgb(56, 56, 56, 0.3);
-      }
-
-      input {
-         background-color: transparent;
-         border: none;
-         text-decoration: none;
-         outline: none;
-         width: 10%%;
-         font-family: "Helvetica", sans-serif;
-         font-weight: bolder;
-         -webkit-user-select: initial;
-         -khtml-user-select: initial;
-         -moz-user-select: initial;
-         -ms-user-select: initial;
-         user-select: initial;
-      }
-
-      .chartContainer {
-         display: flex;
-         justify-content: center;
-         align-items: center;
-      }
-
-      .logoSlide {
-         align-items: center;
-         justify-content: center;
-         align-content: center;
-      }
-
-      #logoImg {
-         width: 45%%;
-         height: auto;
-      }
-
-      .outerButtonContainer {
-         flex-grow: 1;
-         display: flex;
-         flex-flow: column nowrap;
-         align-content: flex-end;
-         margin: 3%%;
-      }
-
-      .buttonContainerAction {
-         display: flex;
-         flex-flow: row nowrap;
-         justify-content: space-evenly;
-         align-items: stretch;
-      }
-
-      .buttonContainerDrive {
-         display: flex;
-         flex-wrap: wrap;
-         justify-content: space-between;
-         flex-grow: 1;
-      }
-
-      .buttonContainerAction {
-         min-height: 20%%;
-      }
-
-      .btn {
-         flex-grow: 1;
-         display: flex;
-         justify-content: center;
-         align-items: center;
-         align-content: center;
-         background-color: #0a2237;
-         border-radius: 10px;
-         margin: 1%%;
-         border: none;
-         cursor: pointer;
-         min-width: 31%%;
-         overflow: hidden;
-      }
-
-      .actionBtn {
-         min-height: 30%%;
-      }
-
-      .logoLandscape {
-         display: flex;
-         justify-content: center;
-         align-items: center;
-      }
-
-      #logoLandscapeImg {
-         height: auto;
-         width: 100%%;
-      }
-
-      @media screen and (orientation: portrait) {
-         #mainContainer {
-            flex-flow: column nowrap;
-         }
-
-         .swiper {
-            width: 100vw;
-            height: 57vh;
-            padding: 4%% 4%% 0 4%%;
-            flex-basis: 57vh;
-         }
-
-         .logoSlide {
-            visibility: visible;
-            width: auto;
-         }
-         .logoLandscape {
-            visibility: hidden;
-            height: 0;
-            padding: 0;
-         }
-         .toggle {
-            transform: scale(0.5);
-         }
-      }
-
-      @media screen and (orientation: landscape) {
-         #mainContainer {
-            flex-flow: row nowrap;
-         }
-
-         .swiper {
-            width: 57vw;
-            height: 100vh;
-            height: calc(var(--vh, 1vh) * 100);
-            padding: 3%% 0 3%% 3%%;
-         }
-
-         .logoSlide {
-            visibility: hidden;
-            width: 0;
-         }
-         .logoLandscape {
-            visibility: visible;
-            height: auto;
-            padding: 3%%;
-         }
-         .toggle {
-            transform: scale(0.8);
-         }
-
-         @media screen and (pointer: fine) and (min-device-width: 500px) {
-            body {
-               display: flex;
-               justify-content: center;
-               align-items: center;
-            }
-
-            #mainContainer {
-               width: 70vw;
-               height: 60vh;
-               height: calc(var(--vh, 1vh) * 60);
-            }
-
-            .swiper {
-               width: 40vw;
-               height: 60vh;
-               height: calc(var(--vh, 1vh) * 60);
-            }
-         }
-      }
-
-
-    </style>
 
 </html>
 )rawliteral";
