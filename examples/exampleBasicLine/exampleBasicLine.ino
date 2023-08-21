@@ -1,6 +1,6 @@
 #include "Car.h"
 
-Car car("ruter_cot", "ESP_32_is_best");
+Car car("networkName", "networkPassword");
 
 void setup() {
    car.initCar();
